@@ -1,5 +1,5 @@
-function fleiss(varargin)
-% FLEISS: compute the Fleiss'es kappa
+function fleiss_kappa(varargin)
+% FLEISS_kappa: compute the Fleiss'es kappa
 % Fleiss'es kappa is a generalisation of Scott's pi statistic, a
 % statistical measure of inter-rater reliability. It is also related to
 % Cohen's kappa statistic. Whereas Scott's pi and Cohen's kappa work for
@@ -12,7 +12,7 @@ function fleiss(varargin)
 % of items then the kappa will give a measure for how consistent the
 % ratings are. The scoring range is between 0 and 1. 
 %
-% Syntax: 	fleiss(X,alpha)
+% Syntax: 	fleiss_kappa(X,alpha)
 %      
 %     Inputs:
 %           X - square data matrix
@@ -53,7 +53,7 @@ function fleiss(varargin)
 % x=[0 0 0 0 14; 0 2 6 4 2; 0 0 3 5 6; 0 3 9 2 0; 2 2 8 1 1 ; 7 7 0 0 0;...
 % 3 2 6 3 0; 2 5 3 2 2; 6 5 2 1 0; 0 2 2 3 7];
 %
-%  Calling on Matlab the function: fleiss(x);
+%  Calling on Matlab the function: fleiss_kappa(x);
 %
 %           Answer is:
 %
