@@ -133,14 +133,16 @@ z=k/sek; %normalized kappa
 p=(1-0.5*erfc(-abs(z)/realsqrt(2)))*2;
 
 %display results
-fprintf('kj:   '); disp(kj)
-fprintf('s.e.: '); disp(sekj)
-fprintf('z:    '); disp(zkj)
-fprintf('p:    '); disp(pkj)
+num_labels = size(x, 2);
+result_table = table(kj(:), zkj(:), pkj(:), ...
+  'VariableNames', {'kj', 'z', 'p'}, ...
+  'RowNames', arrayfun(@(label_idx) sprintf('label_%d', label_idx), 1:num_labels, 'UniformOutput', false));
+disp(result_table);
+fprintf('Standard Error: %0.4G\n', sekj);
 disp(repmat('-',1,60))
-fprintf('Fleiss''es (overall) kappa = %0.4f\n',k)
-fprintf('kappa error = %0.4f\n',sek)
-fprintf('kappa C.I. (%d%%) = %0.4f \t %0.4f\n',(1-alpha)*100,ci)
+fprintf('Fleiss'' (overall) kappa = %0.4f\n',k)
+fprintf('kappa standard error = %0.4f\n',sek)
+fprintf('kappa C.I. (%d%%) = [%0.4f, %0.4f]\n',(1-alpha)*100,ci)
 if k<0
     disp('Poor agreement')
 elseif k>=0 && k<=0.2
@@ -154,7 +156,7 @@ elseif k>0.6 && k<=0.8
 elseif k>0.8 && k<=1
     disp('Perfect agreement')
 end
-fprintf('z = %0.4f \t p = %0.4f\n',z,p)
+fprintf('z = %0.4f\np = %0.4f\n',z,p)
 if p<0.05
     disp('Reject null hypotesis: observed agreement is not accidental')
 else
