@@ -71,7 +71,7 @@ function fleiss_kappa(varargin)
 % kappa C.I. (95%) = 0.1767 	 0.2432
 % Fair agreement
 % z = 12.3743 	 p = 0.0000
-% Reject null hypotesis: observed agreement is not accidental
+% Reject null hypothesis: observed agreement is not accidental
 %
 %           Created by Giuseppe Cardillo
 %           giuseppe.cardillo-edta@poste.it
@@ -158,7 +158,7 @@ elseif k>0.8 && k<=1
 end
 fprintf('z = %0.4f\np = %0.4f\n',z,p)
 if p<0.05
-    disp('Reject null hypotesis: observed agreement is not accidental')
+    disp('Reject null hypothesis: observed agreement is not accidental')
 else
-    disp('Accept null hypotesis: observed agreement is accidental')
+    disp('Accept null hypothesis: observed agreement is accidental')
 end
