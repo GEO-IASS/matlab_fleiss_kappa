@@ -83,22 +83,22 @@ function fleiss_kappa(varargin)
 args=cell(varargin);
 nu=numel(args);
 if isempty(nu)
-    error('Warning: Matrix of data is missed...')
+    error('Matrix of data is missing');
 elseif nu>2
-    error('Warning: Max two input data are required')
+    error('Max two input data are required')
 end
 default.values = {[],0.05};
 default.values(1:nu) = args;
 [x alpha] = deal(default.values{:});
 
 if isvector(x)
-    error('Warning: x must be a matrix, not a vector.');
+    error('X must be a matrix, not a vector.');
 end
 if ~all(isfinite(x(:))) || ~all(isnumeric(x(:))) || isempty(x)
-    error('Warning: X data matrix values must be numeric and finite')
+    error('X data matrix values must be numeric and finite')
 end
 if ~isequal(x(:),round(x(:)))
-    error('Warning: X data matrix values must be whole numbers')
+    error('X data matrix values must be whole numbers')
 end
 n=size(x,1); %subjects
 %chech if the raters are the same for each rows
@@ -108,10 +108,10 @@ if any(r-max(r))
 end
 if nu==2 %if necessary check alpha
     if ~isscalar(alpha) || ~isnumeric(alpha) || ~isfinite(alpha) || isempty(alpha)
-        error('Warning: it is required a numeric, finite and scalar ALPHA value.');
+        error('It is required a numeric, finite and scalar ALPHA value.');
     end
     if alpha <= 0 || alpha >= 1 %check if alpha is between 0 and 1
-        error('Warning: ALPHA must be comprised between 0 and 1.')
+        error('ALPHA must be comprised between 0 and 1.')
     end        
 end
 clear args default nu
