@@ -139,7 +139,7 @@ result_table = table(kj(:), zkj(:), pkj(:), ...
   'RowNames', arrayfun(@(label_idx) sprintf('label_%d', label_idx), 1:num_labels, 'UniformOutput', false));
 disp(result_table);
 fprintf('Standard Error: %0.4G\n', sekj);
-disp(repmat('-',1,60))
+disp(repmat('-',1,48))
 fprintf('Fleiss'' (overall) kappa = %0.4f\n',k)
 fprintf('kappa standard error = %0.4f\n',sek)
 fprintf('kappa C.I. (%d%%) = [%0.4f, %0.4f]\n',(1-alpha)*100,ci)
