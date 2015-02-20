@@ -80,16 +80,8 @@ function fleiss_kappa(varargin)
 % Cardillo G. (2007) Fleiss’es kappa: compute the Fleiss'es kappa for multiple raters.   
 % http://www.mathworks.com/matlabcentral/fileexchange/15426
 
-args=cell(varargin);
-nu=numel(args);
-if isempty(nu)
-    error('Matrix of data is missing');
-elseif nu>2
-    error('Max two input data are required')
-end
-default.values = {[],0.05};
-default.values(1:nu) = args;
-[x alpha] = deal(default.values{:});
+narginchk(1, 2);
+[x, alpha, label_names] = parse_args(varargin);
 
 if isvector(x)
     error('X must be a matrix, not a vector.');
@@ -106,15 +98,12 @@ r=sum(x,2);
 if any(r-max(r))
     error('The raters are not the same for each rows')
 end
-if nu==2 %if necessary check alpha
-    if ~isscalar(alpha) || ~isnumeric(alpha) || ~isfinite(alpha) || isempty(alpha)
-        error('It is required a numeric, finite and scalar ALPHA value.');
-    end
-    if alpha <= 0 || alpha >= 1 %check if alpha is between 0 and 1
-        error('ALPHA must be comprised between 0 and 1.')
-    end        
+if ~isscalar(alpha) || ~isnumeric(alpha) || ~isfinite(alpha) || isempty(alpha)
+    error('It is required a numeric, finite and scalar ALPHA value.');
 end
-clear args default nu
+if alpha <= 0 || alpha >= 1 %check if alpha is between 0 and 1
+    error('ALPHA must be comprised between 0 and 1.')
+end        
 
 m=sum(x(1,:)); %raters
 a=n*m;
@@ -136,7 +125,7 @@ p=(1-0.5*erfc(-abs(z)/realsqrt(2)))*2;
 num_labels = size(x, 2);
 result_table = table(kj(:), zkj(:), pkj(:), ...
   'VariableNames', {'kj', 'z', 'p'}, ...
-  'RowNames', arrayfun(@(label_idx) sprintf('label_%d', label_idx), 1:num_labels, 'UniformOutput', false));
+  'RowNames', label_names);
 disp(result_table);
 fprintf('Standard Error: %0.4G\n', sekj);
 disp(repmat('-',1,48))
@@ -161,4 +150,27 @@ if p<0.05
     disp('Reject null hypothesis: observed agreement is not accidental')
 else
     disp('Accept null hypothesis: observed agreement is accidental')
+end
+
+function [x, alpha, label_names] = parse_args(arg_cell)
+% Parse input arguments
+% Should be of the form {x, alpha}
+% x can be either a matrix or a table
+
+x = arg_cell{1};
+if isnumeric(x)
+  num_labels = size(x, 2);
+  label_names = arrayfun(@(label_idx) sprintf('label_%d', label_idx), 1:num_labels, 'UniformOutput', false);
+elseif istable(x)
+  label_names = x.Properties.VariableNames;
+  x = table2array(x);
+else
+  error('Unexpected type for x: %s', class(x));
+end
+
+alpha_default = 0.05;
+if length(arg_cell) < 2
+  alpha = alpha_default;
+else
+  alpha = arg_cell{2};
 end
